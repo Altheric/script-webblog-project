@@ -15,9 +15,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            //Note to self: Don't run the seeders that rely on foreign keys first.
+            CategorySeeder::class,
+            UserSeeder::class,
+            ArticleSeeder::class,
+            CommentSeeder::class,
+            ImageSeeder::class
         ]);
     }
 }
