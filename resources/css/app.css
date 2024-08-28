@@ -61,4 +61,14 @@ nav a:active{
 }
 #content .articles{
     display: block;
+    max-width:90%;
+}
+#content #sidebar{
+    z-index: 3;
+    background-color: #15cfe7;
+    width: 10%;
+    min-height: 80vh;
+    position: relative;
+    float: right;
+    clear: left;
 }
