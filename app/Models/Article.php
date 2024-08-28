@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'content', 'premium_article', 'category_id', 'user_id'];
-    public function category(){
-        return $this->morphedByMany(Category::class, 'assigned_categories');
+    protected $fillable = ['title', 'content', 'premium_article', 'user_id'];
+    public function articleCategory(){
+        return $this->hasMany(ArticleCategory::class);
     }
     public function user(){
         return $this->belongsTo(User::class);
     }
     public function image(){
-        return $this->belongsTo(Image::class);
+        return $this->hasOne(Image::class);
     }
 }

@@ -12,6 +12,8 @@ body{
     background-size:100vw 110vh;
     background-position-y:-10vh;
 }
+
+/*Navigation bar*/
 nav{
     position: relative;
     left: 5%;
@@ -50,7 +52,13 @@ nav a:active{
     border: 10px solid #15cfe7;
     border-top: none;
 }
-#content h1, p{
+#content h1,h2, p{
     color: white;
     padding: 5px 20px;
+}
+#content h2{
+    font-size:24px;
+}
+#content .articles{
+    display: block;
 }

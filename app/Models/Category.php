@@ -11,7 +11,7 @@ class Category extends Model
     //Disable timestamps.
     public $timestamps = false;
     protected $fillable = ['category_name'];
-    public function article(){
-        return $this->hasMany(Article::class);
+    public function articleCategory(){
+        return $this->hasMany(ArticleCategory::class);
     }
 }

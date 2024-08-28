@@ -24,7 +24,6 @@ class ArticleFactory extends Factory
         return [
             'title' => $this->faker->word,
             'content' => $this->faker->paragraphs(5, true),
-            'category_id' => Category::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
         ];
     }
