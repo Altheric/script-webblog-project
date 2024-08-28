@@ -14,12 +14,12 @@
     </form>
 </div>
 @foreach($articles as $article)
-<a href="/focus/{{$article->id}}">
-    <div class="articles">
+<div class="articles">
+    <a href="/focus/{{$article->id}}"> 
         <h2>{{$article->title}}</h2>
-        <p>Door: {{$article->user->username}}. Geplaatst op: {{$article->created_at}}.</p>
-    </div>
-</a>
+        <p>Door: {{$article->user->username}}. Geplaatst op: {{$article->created_at}}.</p>   
+    </a>
+</div>
 @endforeach
 
 @endsection

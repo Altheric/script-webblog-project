@@ -15,6 +15,7 @@ body{
 
 /*Navigation bar*/
 nav{
+    z-index:2;
     position: relative;
     left: 5%;
     width: 90%;
@@ -49,6 +50,8 @@ nav a:active{
     left: 5%;
     width: 90%;
     min-height: 80vh;
+    max-height:80vh;
+    overflow-y: auto;
     border: 10px solid #15cfe7;
     border-top: none;
 }
@@ -57,7 +60,8 @@ nav a:active{
     padding: 5px 20px;
 }
 #content h2{
-    font-size:24px;
+    font-weight: bold;
+    font-size:32px;
 }
 #content .articles{
     display: block;
@@ -66,9 +70,10 @@ nav a:active{
 #content #sidebar{
     z-index: 3;
     background-color: #15cfe7;
+    background-repeat: repeat-y;
     width: 10%;
-    min-height: 80vh;
-    position: relative;
+    min-height: 79vh;
+    position: sticky;
+    top:0;
     float: right;
-    clear: left;
 }
