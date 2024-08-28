@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestampsTz();
             $table->string('title', length:255);
             $table->text('content');
             $table->boolean('premium_article')->default(false);

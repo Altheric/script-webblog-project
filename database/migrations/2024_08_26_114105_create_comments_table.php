@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->timestampsTz();
             $table->string('comment', length:300);
-            $table->timestamp('comment_post_date');
             $table->foreignId('article_id');
             $table->foreignId('user_id');
         });

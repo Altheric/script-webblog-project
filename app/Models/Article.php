@@ -10,7 +10,7 @@ class Article extends Model
     use HasFactory;
     protected $fillable = ['title', 'content', 'premium_article', 'category_id', 'user_id'];
     public function category(){
-        return $this->hasMany(Category::class);
+        return $this->morphedByMany(Category::class, 'assigned_categories');
     }
     public function user(){
         return $this->belongsTo(User::class);

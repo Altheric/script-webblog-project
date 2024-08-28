@@ -5,13 +5,17 @@ CREATE TABLE `Articles` (
   `title` VARCHAR(255) NOT NULL,
   `content` TEXT(20000) NOT NULL,
   `premium_article` BIT DEFAULT 0,
-  `category_id` INTEGER,
   `user_id` INTEGER
 );
 
 CREATE TABLE `Categories` (
   `id` INTEGER UNIQUE PRIMARY KEY AUTO_INCREMENT,
   `category_name` VARCHAR NOT NULL
+);
+
+CREATE TABLE `Article_Categories` (
+  `category_id` INTEGER,
+  `article_id` INTEGER
 );
 
 CREATE TABLE `Users` (
@@ -25,7 +29,6 @@ CREATE TABLE `Comments` (
   `id` INTEGER UNIQUE PRIMARY KEY AUTO_INCREMENT,
   `comment` VARCHAR(300) NOT NULL,
   `comment_post_date` DATE,
-  `article_id` INTEGER,
   `user_id` INTEGER
 );
 
@@ -37,20 +40,11 @@ CREATE TABLE `Images` (
   `article_id` INTEGER
 );
 
-CREATE TABLE `Categories_Articles` (
-  `Categories_id` INTEGER,
-  `Articles_category_id` INTEGER,
-  PRIMARY KEY (`Categories_id`, `Articles_category_id`)
-);
-
-ALTER TABLE `Categories_Articles` ADD FOREIGN KEY (`Categories_id`) REFERENCES `Categories` (`id`);
-
-ALTER TABLE `Categories_Articles` ADD FOREIGN KEY (`Articles_category_id`) REFERENCES `Articles` (`category_id`);
-
-
 ALTER TABLE `Articles` ADD FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
 
-ALTER TABLE `Articles` ADD FOREIGN KEY (`id`) REFERENCES `Comments` (`article_id`);
+ALTER TABLE `Categories` ADD FOREIGN KEY (`id`) REFERENCES `Article_Categories` (`category_id`);
+
+ALTER TABLE `Articles` ADD FOREIGN KEY (`id`) REFERENCES `Article_Categories` (`article_id`);
 
 ALTER TABLE `Users` ADD FOREIGN KEY (`id`) REFERENCES `Comments` (`user_id`);
 

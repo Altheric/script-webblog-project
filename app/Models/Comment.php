@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     use HasFactory;
-    //Disable timestamps.
-    public $timestamps = false;
     protected $fillable = ['comment', 'article_id', 'user_id'];
     public function article(){
         return $this->hasMany(Article::class);
