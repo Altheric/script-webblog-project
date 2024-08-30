@@ -13,6 +13,9 @@
         <button type="submit">Filter</button>
     </form>
 </div>
+@if(Session::get('username') != null)
+    <h2>Welkom, {{Session::get('username')}}</h2>
+@endif
 @foreach($articles as $article)
 <div class="articles">
     <a href="/article/{{$article->id}}"> 

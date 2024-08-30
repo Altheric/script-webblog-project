@@ -21,6 +21,7 @@ class ArticleController extends Controller
         }
         //Now run the query and sort it.
         $articles = $articles->get()->sortBy('created_at');
+        //Get all the categories
         $categories = Category::all();
         return view('articles.index', compact('articles', 'categories'));
     }

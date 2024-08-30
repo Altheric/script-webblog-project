@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Artikelen')
+@section('title', 'Inloggen')
 
 @section('content')
 <div id="login-form">

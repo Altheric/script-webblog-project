@@ -66,6 +66,8 @@ nav a:active{
     display: block;
     max-width:90%;
 }
+
+/*Sidebar*/
 #content #sidebar{
     z-index: 3;
     background-color: #15cfe7;
@@ -75,6 +77,19 @@ nav a:active{
     position: sticky;
     top:0;
     float: right;
+}
+#sidebar .sidebar-link{
+    margin-top: 30px;
+    padding: 10px;
+    background-color: white;
+}  
+#sidebar .sidebar-link a{
+    
+    color:black;
+    
+}
+#sidebar .sidebar-link:hover{
+    background-color: #d4d4d4;
 }
 
 /*Login*/
@@ -91,4 +106,14 @@ nav a:active{
 }
 .login-content button{
     margin-right:3vw;
+}
+
+/*Article Editing*/
+#content .user-articles{
+    max-width: 60vw;
+}
+#content .article-options{
+    float: right;
+    position: relative;
+    bottom: 50px;
 }

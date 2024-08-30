@@ -9,3 +9,7 @@ Route::get('/filter', [ArticleController::class, 'filter'])->name('articles.filt
 Route::get('/article/{id}', [ArticleController::class,'article'])->name('articles.article');
 Route::get('/users/login', [UserController::class, 'login'])->name('users.login');
 Route::post('/users/login', [UserController::class, 'entry'])->name('users.entry');
+Route::get('/users/logout', [UserController::class, 'logout'])->name('users.logout');
+Route::get('/users/articles', [UserController::class, 'articles'])->name('users.articles');
+Route::get('/users/articles/{item}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::delete('/users//articles{item}', [UserController::class, 'destroy'])->name('users.destroy');
