@@ -17,6 +17,7 @@ Route::post('/users/payment', [UserController::class, 'upgrade'])->name('users.u
 
 Route::get('/users/articles', [UserController::class, 'articles'])->name('users.articles');
 Route::get('/users/articles/{article}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::get('/users/articles/{article}', [UserController::class, 'destroyconfirm'])->name('users.destroyconfirm');
+Route::get('/users/delete/{article}', [UserController::class, 'destroyConfirm'])->name('users.destroyConfirm');
 Route::delete('/users/articles/{article}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/users/articles/{article}&{mutator}', [UserController::class, 'exclusivity'])->name('users.exclusivity');
 

@@ -16,8 +16,17 @@
             <a href="{{ route('users.edit', $article) }}">Bewerken</a>
         </div>
         <div class="link-button">
-            <a href="{{ route('users.destroyconfirm', $article->id) }}">Verwijderen</a>
+            <a href="{{ route('users.destroyConfirm', $article->id) }}">Verwijderen</a>
         </div>
+        @if($article->premium_article == false)
+            <div class="link-button">
+                <a href="{{ route('users.exclusivity',  [$article->id, 1]) }}">Maak Premium</a>
+            </div>
+        @else
+            <div class="link-button">
+                <a href="{{ route('users.exclusivity',  [$article->id, 0]) }}">Verwijder Premium</a>
+            </div>
+        @endif
     </div>
 </div>
 @endforeach

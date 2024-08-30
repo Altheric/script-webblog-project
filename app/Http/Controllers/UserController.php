@@ -71,4 +71,13 @@ class UserController extends Controller
         Session::put(['premium' => true]);
         return redirect()->route('articles.index');
     }
+    //Change the article's premium status depending on the boolean given in the array.
+    public function exclusivity(Article $article, bool $mutator){
+        if($mutator == true){
+            $article->update(['premium_article' =>true]);
+        } else {
+            $article->update(['premium_article' =>false]);
+        }
+        return redirect()->route('users.articles');
+    }
 }
