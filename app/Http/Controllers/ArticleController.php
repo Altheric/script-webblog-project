@@ -29,13 +29,24 @@ class ArticleController extends Controller
     public function filter(){
         //Validate the filterParam, then give it to the Index
         $filterParam = filter_var($_GET['category'], FILTER_VALIDATE_INT);
-        return $this->index($filterParam);
+        //Check if the filter is not null and respond properly.
+        if($filterParam != null){
+            return $this->index($filterParam);
+        } else {
+            return redirect()->route('articles.index');
+        }
     }
 
     //Show a specific article
-    public function focus(string $id){
+    public function article(string $id){
+        $validID = filter_var($id, FILTER_VALIDATE_INT);
         //Get the specific id given with the href, then show the first hit.
-        $article = Article::with('user')->where('id', $id)->first();
-        return view('articles.focus', compact('article'));
+        $article = Article::with('user')->where('id', $validID)->first();
+        //Check if article is not null and respond properly.
+        if($article != null){
+            return view('articles.article', compact('article'));
+        } else {
+            return redirect()->route('articles.index');
+        }
     }
 }
