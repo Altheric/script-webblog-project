@@ -29,7 +29,7 @@ class UserController extends Controller
         //Check if $user is not null and the password is valid.
         if($user != null && Hash::check($validated['password'], $user->password)){
             //Assign user to this session.
-            Session::put(['user_id' => $user->id, 'username' => $user->username]);
+            Session::put(['user_id' => $user->id, 'username' => $user->username, 'premium' => $user->premium_user]);
             return redirect()->route('articles.index');
         } else {
             return $this->login(true);
@@ -40,22 +40,35 @@ class UserController extends Controller
         Session::flush();
         return redirect()->route('users.login');
     }
-
+    //Get all the articles of the user
     public function articles() {
-        //Get all the articles
         $articles = Article::with('user')->where('user_id', Session::get('user_id'))->get();
         return view('users.articles', compact('articles'));
     }
-
+    //Point to the article editor
     public function edit(Article $article){
         $categories = Category::all();
         return view('users.edit', compact('article', 'categories'));
     }
+    //Destroy function to delete the article.
     public function destroy(Article $article){
         $article->delete();
         return redirect()->route('users.articles');
     }
+    //Points to the confirmation page for deletion
     public function destroyConfirm(Article $article){
         return view('users.delete', compact('article'));
+    }
+    //Points to the upgrade to premium page.
+    public function premium(){
+        return view('users.premium');
+    }
+    //Update the current user's premium status in the database
+    public function upgrade(){
+        //Update the database
+        User::where('id', Session::get('user_id'))->update(['premium_user' => true]);
+        //Update the session aswell
+        Session::put(['premium' => true]);
+        return redirect()->route('articles.index');
     }
 }
