@@ -11,5 +11,6 @@ Route::get('/users/login', [UserController::class, 'login'])->name('users.login'
 Route::post('/users/login', [UserController::class, 'entry'])->name('users.entry');
 Route::get('/users/logout', [UserController::class, 'logout'])->name('users.logout');
 Route::get('/users/articles', [UserController::class, 'articles'])->name('users.articles');
-Route::get('/users/articles/{item}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::delete('/users//articles{item}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/users/articles/{article}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::get('/users/articles/{article}', [UserController::class, 'destroyconfirm'])->name('users.destroyconfirm');
+Route::delete('/users/articles/{article}', [UserController::class, 'destroy'])->name('users.destroy');

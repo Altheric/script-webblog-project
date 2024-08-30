@@ -53,6 +53,9 @@ class UserController extends Controller
     }
     public function destroy(Article $article){
         $article->delete();
-        return redirect()->route('users.login');
+        return redirect()->route('users.articles');
+    }
+    public function destroyConfirm(Article $article){
+        return view('users.delete', compact('article'));
     }
 }
