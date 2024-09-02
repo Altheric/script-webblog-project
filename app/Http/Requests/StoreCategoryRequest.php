@@ -3,17 +3,16 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Session;
-class UserLoginRequest extends FormRequest
+class StoreCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-       //Check if there's a logged in user, since you don't need to log in if you're.. logged in.
-       if(Session::get('user_id') == null){
+        //Check if there's a logged in user, then authorize the request.
+        if(Session::get('user_id') == true){
             return true;
         } else{
             return false;
@@ -28,8 +27,7 @@ class UserLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|min:3|max:60',
-            'password' => ['required','max:60',Password::min(8)],
+            'category_name' => 'required|min:3|max:255',
         ];
     }
 }

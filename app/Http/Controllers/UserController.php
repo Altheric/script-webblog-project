@@ -14,8 +14,8 @@ class UserController extends Controller
 {
     //Show user page for editing articles and such
     public function index() {
-        
-        return view('users.index');
+        $articles = Article::with('user')->where('user_id', Session::get('user_id'))->get();
+        return view('users.index', compact('articles'));
     }
     //Show login page
     public function login(bool $loginError = false) {
@@ -40,11 +40,6 @@ class UserController extends Controller
         Session::flush();
         return redirect()->route('users.login');
     }
-    //Get all the articles of the user
-    public function articles() {
-        $articles = Article::with('user')->where('user_id', Session::get('user_id'))->get();
-        return view('users.articles', compact('articles'));
-    }
     //Point to the article editor
     public function edit(Article $article){
         $categories = Category::all();
@@ -53,7 +48,7 @@ class UserController extends Controller
     //Destroy function to delete the article.
     public function destroy(Article $article){
         $article->delete();
-        return redirect()->route('users.articles');
+        return redirect()->route('users.index');
     }
     //Points to the confirmation page for deletion
     public function destroyConfirm(Article $article){
@@ -78,6 +73,6 @@ class UserController extends Controller
         } else {
             $article->update(['premium_article' =>false]);
         }
-        return redirect()->route('users.articles');
+        return redirect()->route('users.index');
     }
 }

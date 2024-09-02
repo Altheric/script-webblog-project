@@ -131,3 +131,10 @@ nav a:active{
 #delete-content .link-button{
     display: inline-block;
 }
+#content .article-options .link-button{
+    margin-right: 20px;
+}
+.user-articles {
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+}

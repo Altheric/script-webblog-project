@@ -49,9 +49,14 @@ class ArticleController extends Controller
         //Get the specific id given with the href, then show the first hit.
         $article = Article::with('user')->where('id', $validID)->first();
 
-        //Check if article is not null and if the article and user are premium.
-        if($article != null && $article->premium_article == Session::get('premium')){
-            return view('articles.article', compact('article'));
+        //Check if article is not null.
+        if($article != null){
+            //Check if the article and user are premium.
+            if($article->premium_article == true && Session::get('premium') == true){        
+                return view('articles.article', compact('article'));
+            } else if($article->premium_article == false) {
+                return view('articles.article', compact('article'));
+            }
         } else {
             return redirect()->route('articles.index');
         }

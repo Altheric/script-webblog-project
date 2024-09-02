@@ -6,6 +6,9 @@
     <div class="link-button">
         <a href="link-button">Nieuw Artikel</a>
     </div>
+    <div class="link-button">
+        <a href="{{ route('categories.index') }}">Nieuwe Categorie</a>
+    </div>
 </div>
 @foreach($articles as $article)
 <div class="user-articles">
