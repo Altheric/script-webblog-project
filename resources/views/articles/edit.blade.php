@@ -19,10 +19,10 @@
         </div>
         <div id="category-select-box">
             <label for="category-select">Categorie&euml;n:</label>
-            <select name="category_id" id="category-select" multiple>
+            <select name="category_id[]" id="category-select" multiple required>
                 @foreach($categories as $category)
-                    <option value="{{$category}}"
-                    @if($articleCategories->has(['category_id' => $category->id]))
+                    <option value="{{$category->id}}"
+                    @if($articleCategories->firstWhere('category_id', $category->id))
                     selected
                     @endif
                     >{{$category->category_name}}</option>

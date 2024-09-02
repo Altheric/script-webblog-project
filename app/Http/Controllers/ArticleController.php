@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Category;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Session;
 
 class ArticleController extends Controller
@@ -62,9 +63,17 @@ class ArticleController extends Controller
         $categories = Category::all();
         return view('articles.edit', compact('article', 'articleCategories', 'categories'));
     }
-    //Update the article in the form.
+    //Update the article in the form and the selected categories.
     public function update(UpdateArticleRequest $request, Article $article){
-        print_r($article);
+        $validated = $request->validated();
+
+        $article->update($validated);
+
+        //Grab all the categories for assignment
+        $articleCategories = ArticleCategory::where('article_id', $article->id)->distinct()->get();
+
+        $articleCategories->update($validated);
+        return redirect()->route('users.index'); 
     }
     //Destroy function to delete the article.
     public function destroy(Article $article){
