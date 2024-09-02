@@ -18,13 +18,15 @@
         <div class="link-button">
             <a href="{{ route('users.destroyConfirm', $article->id) }}">Verwijderen</a>
         </div>
+    </div>    
+    <div class="article-options">
         @if($article->premium_article == false)
             <div class="link-button">
                 <a href="{{ route('users.exclusivity',  [$article->id, 1]) }}">Maak Premium</a>
             </div>
         @else
             <div class="link-button">
-                <a href="{{ route('users.exclusivity',  [$article->id, 0]) }}">Verwijder Premium</a>
+                <a href="{{ route('users.exclusivity',  [$article->id, 0]) }}">Maak Gratis</a>
             </div>
         @endif
     </div>
