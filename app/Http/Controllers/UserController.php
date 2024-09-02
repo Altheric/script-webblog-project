@@ -40,20 +40,7 @@ class UserController extends Controller
         Session::flush();
         return redirect()->route('users.login');
     }
-    //Point to the article editor
-    public function edit(Article $article){
-        $categories = Category::all();
-        return view('users.edit', compact('article', 'categories'));
-    }
-    //Destroy function to delete the article.
-    public function destroy(Article $article){
-        $article->delete();
-        return redirect()->route('users.index');
-    }
-    //Points to the confirmation page for deletion
-    public function destroyConfirm(Article $article){
-        return view('users.delete', compact('article'));
-    }
+   
     //Points to the upgrade to premium page.
     public function premium(){
         return view('users.premium');
@@ -65,14 +52,5 @@ class UserController extends Controller
         //Update the session aswell
         Session::put(['premium' => true]);
         return redirect()->route('articles.index');
-    }
-    //Change the article's premium status depending on the boolean given in the array.
-    public function exclusivity(Article $article, bool $mutator){
-        if($mutator == true){
-            $article->update(['premium_article' =>true]);
-        } else {
-            $article->update(['premium_article' =>false]);
-        }
-        return redirect()->route('users.index');
     }
 }

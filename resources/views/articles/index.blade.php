@@ -13,7 +13,7 @@
         <button type="submit">Filter</button>
     </form>
 </div>
-@if(Session::get('username') != null)
+@if(Session::get('user_id') != null)
     <h2>Welkom, {{Session::get('username')}}</h2>
 @endif
 @foreach($articles as $article)

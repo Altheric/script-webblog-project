@@ -1,4 +1,6 @@
+@include('partials.hidden')
 @extends('layouts.app')
+
 @section('title', 'Mijn Artikelen')
 
 @section('content')
@@ -16,20 +18,20 @@
     <p>Geplaatst op: {{$article->created_at}}.</p>
     <div class="article-options">
         <div class="link-button">
-            <a href="{{ route('users.edit', $article) }}">Bewerken</a>
+            <a href="{{ route('articles.edit', $article->id) }}">Bewerken</a>
         </div>
         <div class="link-button">
-            <a href="{{ route('users.destroyConfirm', $article->id) }}">Verwijderen</a>
+            <a href="{{ route('articles.confirm', [$article->id, 'del']) }}">Verwijderen</a>
         </div>
     </div>    
     <div class="article-options">
         @if($article->premium_article == false)
             <div class="link-button">
-                <a href="{{ route('users.exclusivity',  [$article->id, 1]) }}">Maak Premium</a>
+                <a href="{{ route('articles.exclusivity',  [$article->id, 1]) }}">Maak Premium</a>
             </div>
         @else
             <div class="link-button">
-                <a href="{{ route('users.exclusivity',  [$article->id, 0]) }}">Maak Gratis</a>
+                <a href="{{ route('articles.exclusivity',  [$article->id, 0]) }}">Maak Gratis</a>
             </div>
         @endif
     </div>

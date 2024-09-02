@@ -53,9 +53,9 @@ nav a:active{
     overflow-y: auto;
     border: 10px solid #15cfe7;
     border-top: none;
+    color: white;
 }
 #content h1,h2, p{
-    color: white;
     padding: 5px 20px;
 }
 #content h2{
@@ -100,7 +100,8 @@ nav a:active{
 #centered-form{
     position: relative;
     right: 43%;
-    margin-top: 15%;
+    margin-top: 5%;
+    text-align: center;
 }
 #centered-form img{
     position: relative;
@@ -115,7 +116,20 @@ nav a:active{
 .centered-content button{
     margin-right:3vw;
 }
-
+#content-label{
+    padding-right: 4%;
+}
+.centered-content textarea{
+    text-align: left;
+    width: 40%;
+    max-width: 50%;
+    min-height: 50vh;
+    max-height: 50vh;
+    border: none;
+    position: relative;
+    left: 75%;
+    display: block;
+}
 /*Article Editing*/
 #content .user-articles{
     max-width: 60vw;
@@ -125,10 +139,10 @@ nav a:active{
     position: relative;
     bottom: 70px;
 }
-#delete-content{
+#confirm-content{
     text-align: center;
 }
-#delete-content .link-button{
+#confirm-content .link-button{
     display: inline-block;
 }
 #content .article-options .link-button{
@@ -137,4 +151,18 @@ nav a:active{
 .user-articles {
     border-bottom: 5px solid black;
     border-right: 5px solid black;
+}
+#category-select-box{
+    float: right;
+    position: relative;
+    left: 35%;
+    bottom: 50vh;
+    
+}
+#category-select-box select{
+    min-height: 50vh
+}
+#category-select-box label{
+    position: relative;
+    bottom: 25vh;
 }

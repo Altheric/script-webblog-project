@@ -1,5 +1,6 @@
+@include('partials.hidden')
 @extends('layouts.app')
-@section('title', 'Inloggen')
+@section('title', 'Premium')
 
 @section('content')
 <div id="centered-form">
