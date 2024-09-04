@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class ArticleController extends Controller
 {
@@ -86,6 +86,31 @@ class ArticleController extends Controller
         return redirect()->route('users.index');
 
     }
+    //Function to point to the article creation page.
+    public function create(){
+        $categories = Category::all();
+        return view('articles.create', compact('categories'));
+    }
+    //Function to store a newly created article
+    public function store(StoreArticleRequest $request){
+        $validated = $request->validated();
+        //Create the new article
+        $newArticle = ['title' => $validated['title'], 'content' => $validated['content'], 'user_id' => Auth::id()];
+        $article = Article::create($newArticle);
+        //And the fitting article_categories
+        //First, an empty array to create things with.
+        $createArray = [];
+        foreach($validated['category'] as $category_id){
+            array_push($createArray,
+                ['article_id' => $article->id,
+                'category_id' => $category_id]
+            );
+        }
+        ArticleCategory::upsert($createArray, uniqueBy: ['article_id'], update: ['category_id']);
+        return redirect()->route('users.index');
+    }
+
+
     //Destroy function to delete the article.
     public function destroy(Article $article){
         $article->delete();

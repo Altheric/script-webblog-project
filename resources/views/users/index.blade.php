@@ -5,7 +5,7 @@
 @section('content')
 <div id="sidebar">
     <div class="link-button">
-        <a href="link-button">Nieuw Artikel</a>
+        <a href="{{ route('articles.create') }}">Nieuw Artikel</a>
     </div>
     <div class="link-button">
         <a href="{{ route('categories.index') }}">Nieuwe Categorie</a>

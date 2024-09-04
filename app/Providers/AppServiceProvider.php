@@ -22,7 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::define('article-create', [ArticlePolicy::class, 'create']);
         Gate::define('article-update', [ArticlePolicy::class, 'update']);
+        
         Gate::define('category-create', [CategoryPolicy::class, 'create']);
     }
 }

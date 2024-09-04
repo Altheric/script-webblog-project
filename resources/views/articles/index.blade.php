@@ -18,7 +18,7 @@
 @endif
 @foreach($articles as $article)
 <div class="articles">
-    <a href="/article/{{$article->id}}"> 
+    <a href="{{ route('articles.article',$article->id) }}"> 
         <h2>{{$article->title}}</h2>
         <p>Door: {{$article->user->username}}. Geplaatst op: {{$article->created_at}}.</p>   
     </a>
