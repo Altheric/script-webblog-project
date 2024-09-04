@@ -11,12 +11,7 @@ class StoreCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //Check if there's a logged in user, then authorize the request.
-        if(Session::get('user_id') == true){
-            return true;
-        } else{
-            return false;
-        }
+        return $this->user()->can('category-create');
     }
 
     /**

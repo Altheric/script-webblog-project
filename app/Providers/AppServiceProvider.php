@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use App\Policies\ArticlePolicy;
+use App\Policies\CategoryPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::define('article-update', [ArticlePolicy::class, 'update']);
+        Gate::define('category-create', [CategoryPolicy::class, 'create']);
     }
 }

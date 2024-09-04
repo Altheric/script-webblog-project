@@ -1,4 +1,3 @@
-@include('partials.hidden')
 @extends('layouts.app')
 
 @section('title', 'Mijn Artikelen')

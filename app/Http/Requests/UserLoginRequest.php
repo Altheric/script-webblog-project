@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Facades\Session;
+use App\Models\User;
 class UserLoginRequest extends FormRequest
 {
     /**
@@ -12,12 +12,8 @@ class UserLoginRequest extends FormRequest
      */
     public function authorize(): bool
     {
-       //Check if there's a logged in user, since you don't need to log in if you're.. logged in.
-       if(Session::get('user_id') == null){
-            return true;
-        } else{
-            return false;
-        }
+        //Every user's authorized to login, right?
+        return true;
     }
 
     /**

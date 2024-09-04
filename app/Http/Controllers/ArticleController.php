@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Category;
-use Illuminate\Auth\Events\Validated;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class ArticleController extends Controller
@@ -21,7 +22,7 @@ class ArticleController extends Controller
             //Inner join on article_categories and select all articles with the relevant category_id
             $statement = $statement->join('article_categories', 'articles.id','=','article_categories.article_id')->where('category_id', $filterParam);
         }
-        if(Session::get('premium') == false){
+        if(Auth::user()['premium'] == false){
             //If the user isn't premium, grab the articles that aren't premium as well.
             $statement = $statement->where('premium_article', 0);
         }
@@ -47,7 +48,7 @@ class ArticleController extends Controller
     //Show a specific article
     public function article(Article $article){
         //Check if the article and user are premium.
-        if($article->premium_article == true && Session::get('premium') == true){        
+        if($article->premium_article == true && Auth::user()['premium'] == true){        
             return view('articles.article', compact('article'));
         } else if($article->premium_article == false) {
             return view('articles.article', compact('article'));
@@ -68,11 +69,6 @@ class ArticleController extends Controller
         $validated = $request->validated();
 
         $article->update($validated);
-
-        //Grab all the categories for assignment
-        $articleCategories = ArticleCategory::where('article_id', $article->id)->distinct()->get();
-
-        $articleCategories->update($validated);
         return redirect()->route('users.index'); 
     }
     //Destroy function to delete the article.
@@ -84,7 +80,7 @@ class ArticleController extends Controller
     public function confirm(Article $article, string $action){
         $validAction = htmlspecialchars($action);
         //Check if the user id is the same as the author session id
-        if($article->user->id == Session::get('user_id')){
+        if($article->user->id == Auth::id()){
             if ($validAction == 'del'){
                 return view('articles.confirm', compact('article', 'validAction'));
             } else {
@@ -98,7 +94,7 @@ class ArticleController extends Controller
     public function exclusivity(Article $article, bool $action){
         $validAction = filter_var($action, FILTER_VALIDATE_BOOL);
         //Check if the user id is the same as the author session id
-        if($article->user->id == Session::get('user_id')){
+        if($article->user->id == Auth::id()){
             if($validAction == true){
                 $article->update(['premium_article' =>true]);
             } else {

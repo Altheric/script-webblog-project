@@ -6,15 +6,15 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserLoginRequest;
 use App\Models\Article;
 use App\Models\User;
-use App\Models\Category;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     //Show user page for editing articles and such
     public function index() {
-        $articles = Article::with('user')->where('user_id', Session::get('user_id'))->get();
+        $articles = Article::with('user')->where('user_id', Auth::id())->get();
         return view('users.index', compact('articles'));
     }
     //Show login page
@@ -28,8 +28,8 @@ class UserController extends Controller
         $user = User::where('username',$validated['username'])->first();
         //Check if $user is not null and the password is valid.
         if($user != null && Hash::check($validated['password'], $user->password)){
-            //Assign user to this session.
-            Session::put(['user_id' => $user->id, 'username' => $user->username, 'premium' => $user->premium_user]);
+            //Assign user to the Auth.
+            Auth::login($user);
             return redirect()->route('articles.index');
         } else {
             return $this->login(true);
@@ -37,7 +37,9 @@ class UserController extends Controller
     }
     //Log the user out.
     public function logout() {
-        Session::flush();
+        Auth::logout();
+        Session::invalidate();
+        Session::regenerateToken();
         return redirect()->route('users.login');
     }
    
@@ -48,9 +50,7 @@ class UserController extends Controller
     //Update the current user's premium status in the database
     public function upgrade(){
         //Update the database
-        User::where('id', Session::get('user_id'))->update(['premium_user' => true]);
-        //Update the session aswell
-        Session::put(['premium' => true]);
+        User::where('id', Auth::user())->update(['premium_user' => true]);
         return redirect()->route('articles.index');
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Session;
-
 class UpdateArticleRequest extends FormRequest
 {
     /**
@@ -12,12 +10,7 @@ class UpdateArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //Check if there's a logged in user, then authorize the request.
-        if(Session::get('user_id') == true){
-            return true;
-        } else{
-            return false;
-        }
+       return $this->user()->can('article-update', $this->article);
     }
 
     /**
@@ -30,7 +23,8 @@ class UpdateArticleRequest extends FormRequest
         return [
             'title' => 'required|max:255|min:3',
             'content' => 'required|max:20000|min:3',
-            'category_id' => 'required|array'
+            'category' => 'required|array',
+            'category.*' => 'required'
         ];
     }
 }

@@ -13,8 +13,8 @@
         <button type="submit">Filter</button>
     </form>
 </div>
-@if(Session::get('user_id') != null)
-    <h2>Welkom, {{Session::get('username')}}</h2>
+@if(Auth::id() != null)
+    <h2>Welkom, {{Auth::user()['username']}}</h2>
 @endif
 @foreach($articles as $article)
 <div class="articles">
