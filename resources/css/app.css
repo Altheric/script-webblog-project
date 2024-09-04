@@ -6,6 +6,10 @@ h1{
     font-weight: bold;
     font-size: 64px;
 }
+h3{
+    font-weight: bold;
+    font-size: 32px
+}
 body{
     background-image: url('https://wallpapercave.com/wp/ALgWRj4.jpg');
     background-repeat: no-repeat;
@@ -165,4 +169,14 @@ nav a:active{
 #category-select-box label{
     position: relative;
     bottom: 25vh;
+}
+
+/*Comment Section*/
+#comments{
+    border-top: 20px solid black;
+    margin-top: 30px;
+    padding-left: 20px;
+}
+.comment{
+    margin-top: 15px;
 }

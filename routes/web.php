@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 
 Route::controller(ArticleController::class)->group(function () {
     Route::get('/', 'index')->name('articles.index');
@@ -31,6 +32,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/premium', 'premium')->name('users.premium')->middleware('auth');
     Route::post('/users/payment', 'upgrade')->name('users.upgrade')->middleware('auth');
 });
+
+Route::post('/comments/{article}', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index')->middleware('auth');
 Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store')->middleware('auth');

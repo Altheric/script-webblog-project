@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Category;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
@@ -46,11 +47,13 @@ class ArticleController extends Controller
 
     //Show a specific article
     public function article(Article $article){
+        //Get all the comments of the article.
+        $comments = Comment::with('user')->where('article_id', $article->id)->get();
         //Check if the article and user are premium.
         if(Auth::check() != null && $article->premium_article == true && Auth::user()['premium_user'] == true){        
-            return view('articles.article', compact('article'));
+            return view('articles.article', compact('article', 'comments'));
         } else if($article->premium_article == false) {
-            return view('articles.article', compact('article'));
+            return view('articles.article', compact('article', 'comments'));
         } else {
             return redirect()->route('articles.index'); 
         }
