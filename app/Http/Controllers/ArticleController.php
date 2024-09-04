@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Category;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -22,8 +21,8 @@ class ArticleController extends Controller
             //Inner join on article_categories and select all articles with the relevant category_id
             $statement = $statement->join('article_categories', 'articles.id','=','article_categories.article_id')->where('category_id', $filterParam);
         }
-        if(Auth::user()['premium'] == false){
-            //If the user isn't premium, grab the articles that aren't premium as well.
+        if(Auth::check()== null || Auth::user()['premium_user'] == false){
+            //If the user isn't premium or logged in, grab the articles that aren't premium as well.
             $statement = $statement->where('premium_article', 0);
         }
         //Now run the query and sort it. Distinct is added because the seeder likes to assign duplicate categories.
@@ -48,7 +47,7 @@ class ArticleController extends Controller
     //Show a specific article
     public function article(Article $article){
         //Check if the article and user are premium.
-        if($article->premium_article == true && Auth::user()['premium'] == true){        
+        if(Auth::check() != null && $article->premium_article == true && Auth::user()['premium_user'] == true){        
             return view('articles.article', compact('article'));
         } else if($article->premium_article == false) {
             return view('articles.article', compact('article'));
@@ -69,7 +68,23 @@ class ArticleController extends Controller
         $validated = $request->validated();
 
         $article->update($validated);
-        return redirect()->route('users.index'); 
+        //Now, clear the selected articles.
+
+        //Get the ArticleCategories again because for the life of me I can't pass them through the route.
+        $articleCategories = ArticleCategory::where('article_id', $article->id)->distinct()->first();
+
+        //Make an array of all the to be updated/inserted.
+        $updateArray = [];
+        foreach($validated['category'] as $category_id){
+            array_push($updateArray,
+                ['article_id' => $article->id,
+                'category_id' => $category_id]
+            );
+        }
+        $articleCategories::upsert($updateArray, uniqueBy: ['article_id'], update: ['category_id']);
+
+        return redirect()->route('users.index');
+
     }
     //Destroy function to delete the article.
     public function destroy(Article $article){

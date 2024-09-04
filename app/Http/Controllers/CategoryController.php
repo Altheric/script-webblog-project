@@ -19,4 +19,7 @@ class CategoryController extends Controller
 
         return redirect()->route('users.index');
     }
+    public function destroy(string $article_id, array $categories){
+
+    }
 }

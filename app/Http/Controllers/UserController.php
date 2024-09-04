@@ -28,7 +28,7 @@ class UserController extends Controller
         $user = User::where('username',$validated['username'])->first();
         //Check if $user is not null and the password is valid.
         if($user != null && Hash::check($validated['password'], $user->password)){
-            //Assign user to the Auth.
+            //Assign user to the Auth
             Auth::login($user);
             return redirect()->route('articles.index');
         } else {
