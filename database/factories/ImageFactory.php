@@ -18,7 +18,7 @@ class ImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'image_data' => $this->faker->emoji, //Since placeholder.com has shut down, this is unfortunately the best next thing.
+            'image_path' => 'https://picsum.photos/500', //Since placeholder.com has shut down I'll just use this.
             'image_alt' => $this->faker->sentence,
             'image_subtitle' => $this->faker->sentence,
             'article_id' => Article::inRandomOrder()->first()->id,

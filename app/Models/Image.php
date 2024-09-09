@@ -10,7 +10,7 @@ class Image extends Model
     use HasFactory;
     //Disable timestamps.
     public $timestamps = false;
-    protected $fillable = ['image_data', 'image_alt', 'image_subtitle', 'article_id'];
+    protected $fillable = ['image_path', 'image_alt', 'image_subtitle', 'article_id'];
     public function article(){
         return $this->belongsTo(Article::class);
     }

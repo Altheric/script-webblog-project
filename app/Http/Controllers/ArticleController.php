@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Image;
+
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
@@ -97,9 +101,30 @@ class ArticleController extends Controller
     //Function to store a newly created article
     public function store(StoreArticleRequest $request){
         $validated = $request->validated();
+        
         //Create the new article
-        $newArticle = ['title' => $validated['title'], 'content' => $validated['content'], 'user_id' => Auth::id()];
+        $newArticle = [
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'user_id' => Auth::id()
+        ];
         $article = Article::create($newArticle);
+        //Check if there's image data present, and write this to the database aswell.
+        if($validated['image'] != null){
+            $imagePath = Storage::putFileAs(
+                'images',
+                $request->file('image_data'),
+                //Okay seriously, why does putFileAs not add a file extension, who thought that was a good idea?
+                'article_image_'.$article->id.'.' . $request['image_data']->getClientOriginalExtension()
+            );
+            $newImage = [
+                'image_path' => $imagePath,
+                'image_alt' => $validated['title'] . ' Afbeelding',
+                'image_subtitle' => $validated['image-subtitle'],
+                'article_id' => $article->id
+            ];
+            Image::create($newImage);
+        }
         //And the fitting article_categories
         //First, an empty array to create things with.
         $createArray = [];

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->mediumText('image_data')->charset('binary'); //Medium BLOB
+            $table->string('image_path', length: 255);
             $table->string('image_alt', length: 255);
             $table->string('image_subtitle', length: 255)->nullable();
             $table->foreignId('article_id');

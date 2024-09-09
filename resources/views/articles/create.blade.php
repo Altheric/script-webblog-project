@@ -3,7 +3,7 @@
 
 @section('content')
 <div id="centered-form">
-    <form action="{{ route('articles.store') }}" method="POST">
+    <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="centered-content">
             <label for="title">Titel: </label>
@@ -22,6 +22,13 @@
                 @endforeach
             </select>
         </div>
+        <div class="centered-content">
+            <label for="image-upload">Afbeelding Toevoegen</label>
+            <input type="file" name="image_data" id="image-upload" accept="image/png, image/jpeg">
+            <label for="subtitle">Ondertiteling</label>
+            <input type="text" name="image_subtitle" id="subtitle" minlength="3" maxlength="255">
+        </div>
+        
         <div class="centered-content">
             <button type="submit">Artikel Plaatsen</button>
         </div>

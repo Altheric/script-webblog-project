@@ -34,7 +34,7 @@ CREATE TABLE `Comments` (
 
 CREATE TABLE `Images` (
   `id` INTEGER UNIQUE PRIMARY KEY AUTO_INCREMENT,
-  `image_data` MEDIUMBLOB NOT NULL,
+  `image_path` VARCHAR(255) NOT NULL,
   `image_alt` VARCHAR(255) NOT NULL,
   `image_subtitle` VARCHAR(255) DEFAULT null,
   `article_id` INTEGER
