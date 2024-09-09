@@ -30,6 +30,8 @@ class UserController extends Controller
         if($user != null && Hash::check($validated['password'], $user->password)){
             //Assign user to the Auth
             Auth::login($user);
+            //Write premium status to the session so we don't need to call the database every time we need to check this.
+            Session::put('premium_user', $user->premium_user);
             return redirect()->route('articles.index');
         } else {
             return $this->login(true);
@@ -47,10 +49,10 @@ class UserController extends Controller
     public function premium(){
         return view('users.premium');
     }
-    //Update the current user's premium status in the database
+    //Update the current user's premium status in the database and session
     public function upgrade(){
-        //Update the database
-        User::where('id', Auth::user())->update(['premium_user' => true]);
+        User::where('id', Auth::id())->update(['premium_user' => true]);
+        Session::put('premium_user', true);
         return redirect()->route('articles.index');
     }
 }
