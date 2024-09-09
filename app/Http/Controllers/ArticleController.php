@@ -77,7 +77,24 @@ class ArticleController extends Controller
         $validated = $request->validated();
 
         $article->update($validated);
-        //Now, clear the selected articles.
+        //Check if there was an image to update
+        if($validated['image_data'] != null){
+            $imagePath = Storage::putFileAs(
+                'images',
+                $request->file('image_data'),
+                //Okay seriously, why does putFileAs not add a file extension, who thought that was a good idea?
+                'article_image_'.$article->id.'.' . $request['image_data']->getClientOriginalExtension()
+            );
+            $newImage = [
+                //Put the path a folder up so it will display properly later.
+                'image_path' => '../'.$imagePath,
+                'image_alt' => $validated['title'] . ' Afbeelding',
+                'image_subtitle' => $validated['image_subtitle'],
+                'article_id' => $article->id
+            ];
+            $image = Image::where('article_id', $article->id)->first();
+            $image == null ? Image::create($newImage) : $image->update($newImage);
+        }
 
         //Get the ArticleCategories again because for the life of me I can't pass them through the route.
         $articleCategories = ArticleCategory::where('article_id', $article->id)->distinct()->first();
@@ -116,11 +133,9 @@ class ArticleController extends Controller
             $imagePath = Storage::putFileAs(
                 'images',
                 $request->file('image_data'),
-                //Okay seriously, why does putFileAs not add a file extension, who thought that was a good idea?
                 'article_image_'.$article->id.'.' . $request['image_data']->getClientOriginalExtension()
             );
             $newImage = [
-                //Put the path a folder up so it will display properly later.
                 'image_path' => '../'.$imagePath,
                 'image_alt' => $validated['title'] . ' Afbeelding',
                 'image_subtitle' => $validated['image_subtitle'],
