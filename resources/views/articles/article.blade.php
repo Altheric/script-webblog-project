@@ -4,9 +4,12 @@
 @section('content')
 <h2>{{$article->title}}</h2>
 <p>Door: {{$article->user->username}}. Geplaatst op: {{$article->created_at}}.</p>
-{{--Check if the article has an image with it. Using emoji's for the image data because faker's image methods dont work anymore.--}}
-<p>{{$article->image == null ? null : $article::find($article->id)->image->image_data}}</p>
 <p>{{$article->content}}</p>
+{{--Check if the article has an image with it.--}}
+@if($article->image != null)
+    <img src="{{$image->image_path}}" alt="{{$image->image_alt}}">
+    <p id="subtitle">{{$image->image_subtitle}}<p>
+@endif
 <div id="comments">
     <h2>Comments</h2>
     @foreach ($comments as $comment)

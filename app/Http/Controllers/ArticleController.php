@@ -53,11 +53,13 @@ class ArticleController extends Controller
     public function article(Article $article){
         //Get all the comments of the article.
         $comments = Comment::with('user')->where('article_id', $article->id)->get();
+        //Check if an image exists
+        $image = $article->image != null ? $article::find($article->id)->image : null;
         //Check if the article and user are premium.
         if(Auth::check() != null && $article->premium_article == true && Auth::user()['premium_user'] == true){        
-            return view('articles.article', compact('article', 'comments'));
+            return view('articles.article', compact('article', 'comments', 'image'));
         } else if($article->premium_article == false) {
-            return view('articles.article', compact('article', 'comments'));
+            return view('articles.article', compact('article', 'comments', 'image'));
         } else {
             return redirect()->route('articles.index'); 
         }
@@ -110,7 +112,7 @@ class ArticleController extends Controller
         ];
         $article = Article::create($newArticle);
         //Check if there's image data present, and write this to the database aswell.
-        if($validated['image'] != null){
+        if($validated['image_data'] != null){
             $imagePath = Storage::putFileAs(
                 'images',
                 $request->file('image_data'),
@@ -118,9 +120,10 @@ class ArticleController extends Controller
                 'article_image_'.$article->id.'.' . $request['image_data']->getClientOriginalExtension()
             );
             $newImage = [
-                'image_path' => $imagePath,
+                //Put the path a folder up so it will display properly later.
+                'image_path' => '../'.$imagePath,
                 'image_alt' => $validated['title'] . ' Afbeelding',
-                'image_subtitle' => $validated['image-subtitle'],
+                'image_subtitle' => $validated['image_subtitle'],
                 'article_id' => $article->id
             ];
             Image::create($newImage);
