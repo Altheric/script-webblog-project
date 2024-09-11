@@ -54,11 +54,11 @@ class ArticleController extends Controller
 
     //Show a specific article
     public function article(Article $article){
-        //Get all the comments of the article.
+        
         $comments = Comment::with('user')->where('article_id', $article->id)->get();
-        //Check if an image exists
+        
         $image = $article->image != null ? $article::find($article->id)->image : null;
-        //Check if the article and user are premium.
+        
         if(Auth::check() != null && $article->premium_article == true && Session::get('premium_user') == true){        
             return view('articles.article', compact('article', 'comments', 'image'));
         } else if($article->premium_article == false) {
@@ -71,9 +71,10 @@ class ArticleController extends Controller
 
     //Point tot the edit page for the specified Article
     public function edit(Article $article){
-        //Grab all the categories for assignment
         $articleCategories = ArticleCategory::where('article_id', $article->id)->distinct()->get();
+        
         $categories = Category::all();
+        
         return view('articles.edit', compact('article', 'articleCategories', 'categories'));
     }
 
@@ -83,28 +84,22 @@ class ArticleController extends Controller
         $validated = $request->validated();
 
         $article->update($validated);
-        //Check if there was an image to update
+
         if(isset($validated['image_data'])){
             $newImage = $this->imageQuery($article, $validated['image_subtitle'], $request->file('image_data'));
             $image = Image::where('article_id', $article->id)->first();
             $image == null ? Image::create($newImage) : $image->update($newImage);
         }
 
-        //Get the ArticleCategories again because for the life of me I can't pass them through the route.
-        $articleCategories = ArticleCategory::where('article_id', $article->id)->distinct()->first();
-
-        //Make an array of all the to be updated/inserted.
-        $updateArray = $this->articleCategoryQuery($article, $validated['category']);
-        $articleCategories::upsert($updateArray, uniqueBy: ['article_id'], update: ['category_id']);
+        $article->categories()->sync($validated['category']);
 
         return redirect()->route('users.index');
-
     }
 
-
     //Function to point to the article creation page.
-    public function create(){
+    public function create(){     
         $categories = Category::all();
+     
         return view('articles.create', compact('categories'));
     }
 
@@ -112,22 +107,18 @@ class ArticleController extends Controller
     //Function to store a newly created article
     public function store(StoreArticleRequest $request){
         $validated = $request->validated();
+
+        $validated['user_id'] = Auth::id();        
         
-        //Create the new article
-        $newArticle = [
-            'title' => $validated['title'],
-            'content' => $validated['content'],
-            'user_id' => Auth::id()
-        ];
-        $article = Article::create($newArticle);
-        //Check if there's image data present, and write this to the database aswell.
+        $article = Article::create($validated);
+
         if(isset($validated['image_data'])){
             $newImage = $this->imageQuery($article, $validated['image_subtitle'], $request->file('image_data'));
             Image::create($newImage);
         }
-        //And the fitting article_categories
-        $createArray = $this->articleCategoryQuery($article, $validated['category']);
-        ArticleCategory::upsert($createArray, uniqueBy: ['article_id'], update: ['category_id']);
+
+        $article->categories()->sync($validated['category']);
+        
         return redirect()->route('users.index');
     }
 
@@ -189,17 +180,5 @@ class ArticleController extends Controller
             'article_id' => $article->id
         ];
         return $newImage;
-    }
-
-    //Return a part of the query for updating/storing the list of selected categories of an article.
-    private function articleCategoryQuery(Article $article, array $categories): array{
-        $queryArray = [];
-        foreach($categories as $category){
-            array_push($queryArray,
-                ['article_id' => $article->id,
-                'category_id' => $category]
-            );
-        }
-        return $queryArray;
     }
 }

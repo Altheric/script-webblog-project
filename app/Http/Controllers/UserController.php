@@ -14,6 +14,9 @@ class UserController extends Controller
 {
     //Show user page for editing articles and such
     public function index() {
+        //Didn't work. Tried Auth::id() and Auth::getUser() too. Doesn't return a User collection either way.
+        // $articles = Auth::user()->articles;
+
         $articles = Article::with('user')->where('user_id', Auth::id())->get();
         return view('users.index', compact('articles'));
     }

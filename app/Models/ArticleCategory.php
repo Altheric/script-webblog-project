@@ -10,10 +10,8 @@ class ArticleCategory extends Model
     use HasFactory;
     //Disable timestamps.
     public $timestamps = false;
+    protected $table = "article_category";
     protected $fillable = ['article_id', 'category_id'];
-    public function category(){
-        return $this->belongsToMany(Category::class);
-    }
     public function article(){
         return $this->belongsToMany(Article::class);
     }

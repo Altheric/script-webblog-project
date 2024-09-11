@@ -13,6 +13,8 @@ class CommentController extends Controller
     public function store(StoreCommentRequest $request, Article $article){
         $validated = $request->validated();
 
+        // $article->comments()->create($validated)
+
         $creationArray = ['comment' => $validated['comment'], 'user_id' => Auth::id(), 'article_id' => $article->id];
 
         Comment::create($creationArray);
