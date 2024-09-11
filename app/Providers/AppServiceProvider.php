@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Policies\ArticlePolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\CommentPolicy;
+use App\Policies\UserPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,11 +24,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('article-create', [ArticlePolicy::class, 'create']);
+        Gate::define('article-store', [ArticlePolicy::class, 'store']);
         Gate::define('article-update', [ArticlePolicy::class, 'update']);
         
-        Gate::define('comment-create', [CommentPolicy::class, 'create']);
+        Gate::define('user-login', [UserPolicy::class, 'login']);
 
-        Gate::define('category-create', [CategoryPolicy::class, 'create']);
+        Gate::define('comment-store', [CommentPolicy::class, 'store']);
+
+        Gate::define('category-store', [CategoryPolicy::class, 'store']);
     }
 }

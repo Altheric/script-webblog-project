@@ -84,7 +84,7 @@ class ArticleController extends Controller
 
         $article->update($validated);
         //Check if there was an image to update
-        if($validated['image_data'] != null){
+        if(isset($validated['image_data'])){
             $newImage = $this->imageQuery($article, $validated['image_subtitle'], $request->file('image_data'));
             $image = Image::where('article_id', $article->id)->first();
             $image == null ? Image::create($newImage) : $image->update($newImage);
@@ -94,7 +94,7 @@ class ArticleController extends Controller
         $articleCategories = ArticleCategory::where('article_id', $article->id)->distinct()->first();
 
         //Make an array of all the to be updated/inserted.
-        $updateArray = $this->articleCategoryQuery($article, $validated['categories']);
+        $updateArray = $this->articleCategoryQuery($article, $validated['category']);
         $articleCategories::upsert($updateArray, uniqueBy: ['article_id'], update: ['category_id']);
 
         return redirect()->route('users.index');
@@ -121,12 +121,12 @@ class ArticleController extends Controller
         ];
         $article = Article::create($newArticle);
         //Check if there's image data present, and write this to the database aswell.
-        if($validated['image_data'] != null){
+        if(isset($validated['image_data'])){
             $newImage = $this->imageQuery($article, $validated['image_subtitle'], $request->file('image_data'));
             Image::create($newImage);
         }
         //And the fitting article_categories
-        $createArray = $this->articleCategoryQuery($article, $validated['categories']);
+        $createArray = $this->articleCategoryQuery($article, $validated['category']);
         ArticleCategory::upsert($createArray, uniqueBy: ['article_id'], update: ['category_id']);
         return redirect()->route('users.index');
     }

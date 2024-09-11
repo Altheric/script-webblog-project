@@ -18,8 +18,8 @@ class UserController extends Controller
         return view('users.index', compact('articles'));
     }
     //Show login page
-    public function login(bool $loginError = false) {
-        return view('users.login', compact('loginError'));
+    public function login(bool $loginMismatch = false) {
+        return view('users.login', compact('loginMismatch'));
     }
     //Validate login credentials, then compare to database
     public function entry(UserLoginRequest $request) {

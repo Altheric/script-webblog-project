@@ -18,7 +18,7 @@
         </div>
     </form>
 </div>
-@if($loginError == true)
+@if($loginMismatch == true)
 <div class="centered-content">
     <p>De gebruikersnaam of wachtwoord klopt niet.</p>
 </div>

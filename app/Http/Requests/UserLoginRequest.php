@@ -12,8 +12,7 @@ class UserLoginRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //Every user's authorized to login, right?
-        return true;
+        return $this->user()->can('user-login');
     }
 
     /**

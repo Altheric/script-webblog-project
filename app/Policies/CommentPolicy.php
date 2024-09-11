@@ -10,9 +10,9 @@ class CommentPolicy
     /**
      * Create a new policy instance.
      */
-    public function create()
+    public function store(User $user)
     {
-        //Check if the user's logged in, as anyone logged in can make a comment.
-        return Auth::check();
+        //Check if the user given is the same as the logged in user.
+        return $user->id == Auth::id();
     }
 }

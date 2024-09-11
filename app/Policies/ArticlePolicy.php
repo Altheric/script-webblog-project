@@ -11,10 +11,10 @@ class ArticlePolicy
     /**
      * Create a new policy instance.
      */
-    public function create()
+    public function store(User $user)
     {
-        //Check if the user's logged in, as anyone can make an article
-        return Auth::check();
+        //Check if the user given is the same as the logged in user.
+        return $user->id == Auth::id();
     }
     public function update(User $user, Article $article)
     {
